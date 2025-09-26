@@ -1,7 +1,13 @@
 name: Super-Linter
 
-on: 
+on:
   push:
+  pull_request:
+
+permissions:
+  contents: read
+  packages: read
+  statuses: write
 
 jobs:
   super-lint:
@@ -9,13 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
 
       - name: Run Super-Linter
-        uses: super-linter/super-linter@v6
+        uses: super-linter/super-linter@v8.1.0
         env:
-          DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DISABLE_ERRORS: true
-          VALIDATE_MARKDOWN: true
-
+          DISABLE_ERRORS: 'true'
+          VALIDATE_MARKDOWN: 'true'
